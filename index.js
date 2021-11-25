@@ -1,4 +1,5 @@
 const dbConnect = require('./config');
+require('dotenv').config();
 const express = require('express');
 const app = express();
 
@@ -92,8 +93,4 @@ app.get('/pincode/:pincode/', async (req, res) => {
 } );
 
 
-
-
-
-
-app.listen(3000);
+app.listen(process.env.PORT || port, () => console.log(`Example app listening at http://localhost:${port}`));
