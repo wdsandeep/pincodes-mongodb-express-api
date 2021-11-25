@@ -2,13 +2,12 @@ const dbConnect = require('./config');
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const port = 3000;
 
 app.use(express.json());
 
 app.get('/', async(req, res) => {
-    let collection = await dbConnect();
-    collection = await collection.find().limit(10).toArray();
-    res.json(collection);
+    res.json({ "hello": "world" });
 })
 // get unique list of states
 app.get('/states', async(req, res) => {
