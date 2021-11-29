@@ -39,6 +39,26 @@ app.get('/states', async(req, res) => {
     res.json(collection);
 })
 
+//get stateinfo from stateSlug
+app.get('/stateinfo/:stateSlug', async(req, res) => {
+    console.log(req.params.stateSlug);
+    let collection = await dbConnect();
+    //collection = await collection.find({ 'StateSlug': req.params.stateSlug }).limit(1).toArray()
+    collection = await collection.aggregate([
+        {
+            $match: {  StateSlug: req.params.stateSlug }
+        },
+        {
+            $limit: 1
+        },
+        {
+            $project: { StateName: 1, StateSlug: 1, _id:0 }
+        }
+    ]).toArray();
+    res.json(collection);
+})
+
+
 //get all district of given state slug
 app.get('/district/:stateSlug', async(req, res) => {
     console.log(req.params.stateSlug);
