@@ -58,6 +58,27 @@ app.get('/stateinfo/:stateSlug', async(req, res) => {
     res.json(collection);
 })
 
+app.get('/districtinfo/:stateSlug/:districtSlug', async(req, res) => {
+    //console.log(req.params.stateSlug);
+    //console.log(req.params.districtSlug);
+    let collection = await dbConnect();
+    //collection = await collection.find({ 'StateSlug': req.params.stateSlug }).limit(1).toArray()
+    collection = await collection.aggregate([
+        {
+            $match: { StateSlug: req.params.stateSlug },
+            $match: { DistrictSlug: req.params.districtSlug}
+        },
+        {
+            $limit: 1
+        },
+        {
+            $project: { _id:0, StateName:1, DistrictName:1, StateSlug:1, DistrictSlug:1 }
+        }
+    ]).toArray();
+    res.json(collection);
+})
+
+
 
 //get all district of given state slug
 app.get('/district/:stateSlug', async(req, res) => {
